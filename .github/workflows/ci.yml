@@ -42,5 +42,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/doska-proklyatiy:latest
-            ghcr.io/${{ github.repository_owner }}/doska-proklyatiy:${{ github.sha }}
+            ghcr.io/maloxda/doska-proklyatiy:latest
+            ghcr.io/maloxda/doska-proklyatiy:${{ github.sha }}
