@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Доска проклятий — Ритуалы и консультации</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0a0a0f;
+      color: #e8e8f0;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ШАПКА */
+    header {
+      background: #0a0a0f;
+      padding: 22px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #1e1e2e;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+    }
+
+    nav a {
+      color: #b0b0c0;
+      text-decoration: none;
+      margin-left: 32px;
+      font-size: 15px;
+      font-weight: 500;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    nav a:hover { color: #ffffff; }
+
+    nav a.active {
+      color: #ffffff;
+    }
+
+    nav a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -22px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #a78bfa;
+    }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      min-height: 520px;
+      display: flex;
+      align-items: center;
+      padding: 0 48px;
+      background: linear-gradient(90deg, #0a0a0f 0%, #0a0a0f 40%, rgba(10,10,15,0.3) 100%),
+                  url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1600') center/cover no-repeat;
+    }
+
+    .hero-content {
+      max-width: 520px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero h1 {
+      font-size: 56px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    .hero p {
+      font-size: 17px;
+      color: #b0b0c0;
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+
+    .btn {
+      background: #a78bfa;
+      color: #0a0a0f;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn:hover {
+      background: #9b7af0;
+      transform: translateY(-1px);
+    }
+
+    /* УСЛУГИ */
+    .services {
+      padding: 80px 48px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .services h2 {
+      font-size: 32px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 32px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 32px;
+      border-bottom: 1px solid #1e1e2e;
+      margin-bottom: 40px;
+    }
+
+    .tab {
+      padding-bottom: 16px;
+      color: #808090;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .tab.active {
+      color: #ffffff;
+    }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #a78bfa;
+    }
+
+    .service-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .service-row {
+      display: grid;
+      grid-template-columns: 1fr 2fr auto;
+      align-items: center;
+      gap: 24px;
+      padding: 28px 0;
+      border-bottom: 1px solid #1e1e2e;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+
+    .service-row:hover {
+      background: rgba(167, 139, 250, 0.03);
+    }
+
+    .service-row h3 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .service-row .desc {
+      color: #9090a0;
+      font-size: 15px;
+    }
+
+    .service-row .link {
+      color: #a78bfa;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .service-row .link:hover {
+      text-decoration: underline;
+    }
+
+    /* КАК ЗАКАЗАТЬ */
+    .how {
+      padding: 60px 48px 100px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .how h2 {
+      font-size: 32px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 40px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+    }
+
+    .step {
+      background: #14141f;
+      border: 1px solid #1e1e2e;
+      border-radius: 12px;
+      padding: 28px;
+      transition: all 0.3s;
+    }
+
+    .step:hover {
+      border-color: #a78bfa;
+      transform: translateY(-4px);
+    }
+
+    .step h4 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .step p {
+      color: #808090;
+      font-size: 14px;
+    }
+
+    /* ПОДВАЛ */
+    footer {
+      background: #0a0a0f;
+      padding: 32px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #1e1e2e;
+      color: #606070;
+      font-size: 14px;
+    }
+
+    footer a {
+      color: #808090;
+      text-decoration: none;
+      margin-left: 24px;
+    }
+
+    footer a:hover { color: #a78bfa; }
+
+    /* АДАПТИВ */
+    @media (max-width: 768px) {
+      header { padding: 16px 20px; }
+      nav a { margin-left: 16px; font-size: 14px; }
+      .hero { padding: 0 20px; min-height: 400px; }
+      .hero h1 { font-size: 36px; }
+      .services, .how { padding: 48px 20px; }
+      .service-row { grid-template-columns: 1fr; gap: 8px; }
+      footer { flex-direction: column; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ШАПКА -->
+  <header>
+    <div class="logo">Доска проклятий</div>
+    <nav>
+      <a href="#services" class="active">Услуги</a>
+      <a href="#masters">Мастера</a>
+      <a href="#orders">Мои заказы</a>
+      <a href="#login">Войти</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Ритуалы<br>и консультации</h1>
+      <p>Выберите услугу и обсудите запрос с мастером</p>
+      <a href="#services" class="btn">Каталог услуг</a>
+    </div>
+  </section>
+
+  <!-- УСЛУГИ -->
+  <section class="services" id="services">
+    <h2>Услуги</h2>
+    <div class="tabs">
+      <div class="tab active">Все услуги</div>
+      <div class="tab">Ритуалы</div>
+      <div class="tab">Консультации</div>
+      <div class="tab">Амулеты</div>
+    </div>
+
+    <div class="service-list">
+      <div class="service-row">
+        <h3>Любовная магия</h3>
+        <span class="desc">Отношения и примирение</span>
+        <a href="#" class="link">Подробнее</a>
+      </div>
+      <div class="service-row">
+        <h3>Денежные ритуалы</h3>
+        <span class="desc">Денежные вопросы и благополучие</span>
+        <a href="#" class="link">Подробнее</a>
+      </div>
+      <div class="service-row">
+        <h3>Защитные обряды</h3>
+        <span class="desc">Защитные практики и обереги</span>
+        <a href="#" class="link">Подробнее</a>
+      </div>
+      <div class="service-row">
+        <h3>Снятие проклятий</h3>
+        <span class="desc">Диагностика и очищение</span>
+        <a href="#" class="link">Подробнее</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- КАК ЗАКАЗАТЬ -->
+  <section class="how">
+    <h2>Как заказать</h2>
+    <div class="steps">
+      <div class="step">
+        <h4>1. Выберите услугу</h4>
+        <p>Изучите каталог и найдите подходящий ритуал</p>
+      </div>
+      <div class="step">
+        <h4>2. Заполните анкету</h4>
+        <p>Опишите ситуацию и укажите контакты</p>
+      </div>
+      <div class="step">
+        <h4>3. Получите отчёт</h4>
+        <p>Мастер свяжется с вами и обсудит детали</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ПОДВАЛ -->
+  <footer>
+    <div>Доска проклятий</div>
+    <div>
+      <a href="#">Поддержка</a>
+      <a href="#">Контакты</a>
+    </div>
+  </footer>
+
+</body>
+</html>
