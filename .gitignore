@@ -1,0 +1,33 @@
+# зависимости
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# сборка
+.next/
+out/
+dist/
+build/
+
+# секреты и ключи — только имена в .env.example
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+firebase-config.json
+
+# сертификаты: папка нужна в репозитории, сами файлы — нет
+certs/*
+!certs/.gitkeep
+!certs/README.md
+# локальный CA mkcert (rootCA-key.pem — закрытый ключ, его нельзя публиковать)
+.mkcert/
+
+# служебное
+.DS_Store
+Thumbs.db
+*.log
+screenshots/.profile/

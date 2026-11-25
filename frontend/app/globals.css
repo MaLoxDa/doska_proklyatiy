@@ -1,0 +1,56 @@
+@import "./fonts.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-bg text-text font-display;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: #7858ae;
+    color: #ffffff;
+  }
+
+  :focus-visible {
+    outline: 2px solid #aa88cf;
+    outline-offset: 3px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display font-normal;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+@layer components {
+  .link-quiet {
+    @apply text-link underline-offset-4 hover:underline;
+  }
+
+  .field {
+    @apply w-full rounded bg-panel px-4 py-3 text-ui text-text placeholder:text-muted
+           border border-transparent focus:border-accent-2 focus:outline-none;
+  }
+}

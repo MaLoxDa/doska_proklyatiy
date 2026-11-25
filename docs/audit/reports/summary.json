@@ -1,0 +1,98 @@
+[
+  {
+    "url": "https://doska.localhost/",
+    "runs": 3,
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "fcp": 241,
+      "lcp": 382,
+      "tbt": 0,
+      "cls": 0,
+      "si": 241
+    },
+    "failed": []
+  },
+  {
+    "url": "https://doska.localhost/uslugi",
+    "runs": 3,
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "fcp": 291,
+      "lcp": 399,
+      "tbt": 0,
+      "cls": 0.002,
+      "si": 291
+    },
+    "failed": []
+  },
+  {
+    "url": "https://doska.localhost/uslugi/zashchitnye-obryady",
+    "runs": 3,
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "fcp": 284,
+      "lcp": 434,
+      "tbt": 0,
+      "cls": 0,
+      "si": 284
+    },
+    "failed": []
+  },
+  {
+    "url": "https://doska.localhost/mastera",
+    "runs": 3,
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "fcp": 283,
+      "lcp": 391,
+      "tbt": 0,
+      "cls": 0,
+      "si": 283
+    },
+    "failed": []
+  },
+  {
+    "url": "https://doska.localhost/mastera/mariya",
+    "runs": 3,
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "fcp": 281,
+      "lcp": 441,
+      "tbt": 0,
+      "cls": 0.001,
+      "si": 281
+    },
+    "failed": []
+  },
+  {
+    "url": "https://doska.localhost/zayavka",
+    "runs": 3,
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "fcp": 285,
+      "lcp": 396,
+      "tbt": 0,
+      "cls": 0.002,
+      "si": 285
+    },
+    "failed": []
+  }
+]

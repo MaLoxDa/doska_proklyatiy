@@ -1,0 +1,38 @@
+[
+  {
+    "url": "https://doska.localhost/vhod",
+    "runs": 1,
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 66,
+      "fcp": 286,
+      "lcp": 394,
+      "tbt": 0,
+      "cls": 0,
+      "si": 286
+    },
+    "failed": [
+      "is-crawlable: Page is blocked from indexing"
+    ]
+  },
+  {
+    "url": "https://doska.localhost/moi-zakazy",
+    "runs": 1,
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 66,
+      "fcp": 286,
+      "lcp": 393,
+      "tbt": 0,
+      "cls": 0.001,
+      "si": 286
+    },
+    "failed": [
+      "is-crawlable: Page is blocked from indexing"
+    ]
+  }
+]

@@ -1,0 +1,28 @@
+[
+  {
+    "url": "https://magic-online.ru/",
+    "runs": 1,
+    "median": {
+      "performance": 86,
+      "accessibility": 83,
+      "bestPractices": 78,
+      "seo": 100,
+      "fcp": 1063,
+      "lcp": 1578,
+      "tbt": 0,
+      "cls": 0.027,
+      "si": 2903
+    },
+    "failed": [
+      "server-response-time: Reduce initial server response time",
+      "third-party-cookies: Uses third-party cookies",
+      "aria-allowed-role: Uses ARIA roles on incompatible elements",
+      "button-name: Buttons do not have an accessible name",
+      "color-contrast: Background and foreground colors do not have a sufficient contrast ratio.",
+      "link-name: Links do not have a discernible name",
+      "target-size: Touch targets do not have sufficient size or spacing.",
+      "modern-image-formats: Serve images in next-gen formats",
+      "inspector-issues: Issues were logged in the `Issues` panel in Chrome Devtools"
+    ]
+  }
+]

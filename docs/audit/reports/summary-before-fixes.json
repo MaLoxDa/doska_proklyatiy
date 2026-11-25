@@ -1,0 +1,102 @@
+[
+  {
+    "url": "https://doska.localhost/",
+    "runs": 3,
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "fcp": 287,
+      "lcp": 424,
+      "tbt": 0,
+      "cls": 0,
+      "si": 287
+    },
+    "failed": [
+      "modern-image-formats: Serve images in next-gen formats"
+    ]
+  },
+  {
+    "url": "https://doska.localhost/uslugi",
+    "runs": 3,
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "fcp": 283,
+      "lcp": 363,
+      "tbt": 0,
+      "cls": 0.001,
+      "si": 283
+    },
+    "failed": []
+  },
+  {
+    "url": "https://doska.localhost/uslugi/zashchitnye-obryady",
+    "runs": 3,
+    "median": {
+      "performance": 100,
+      "accessibility": 96,
+      "bestPractices": 100,
+      "seo": 100,
+      "fcp": 232,
+      "lcp": 447,
+      "tbt": 0,
+      "cls": 0,
+      "si": 246
+    },
+    "failed": [
+      "link-in-text-block: Links rely on color to be distinguishable."
+    ]
+  },
+  {
+    "url": "https://doska.localhost/mastera",
+    "runs": 3,
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "fcp": 283,
+      "lcp": 361,
+      "tbt": 0,
+      "cls": 0,
+      "si": 283
+    },
+    "failed": []
+  },
+  {
+    "url": "https://doska.localhost/mastera/mariya",
+    "runs": 3,
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "fcp": 281,
+      "lcp": 419,
+      "tbt": 0,
+      "cls": 0.001,
+      "si": 281
+    },
+    "failed": []
+  },
+  {
+    "url": "https://doska.localhost/zayavka",
+    "runs": 3,
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "fcp": 321,
+      "lcp": 432,
+      "tbt": 0,
+      "cls": 0.002,
+      "si": 321
+    },
+    "failed": []
+  }
+]
