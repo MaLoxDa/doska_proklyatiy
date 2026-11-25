@@ -203,32 +203,82 @@ class InvalidCredentialsError(RuntimeError):
     """Supabase отклонил логин или пароль."""
 
 
-def _service_payload(row: dict[str, Any]) -> dict[str, Any] | None:
-    """Приводим строку таблицы services к полям фронтенда."""
-    slug = row.get("slug")
+def _slugify(value: str) -> str:
+    """Простой транслит в slug: «Защитные обряды» → «zashchitnye-obryady»."""
+    table = str.maketrans(
+        "абвгдеёжзийклмнопрстуфхцчшщъыьэюя",
+        "abvgdeejziyklmnoprstufhccss_y_eua",
+    )
+    text = value.lower().translate(table)
+    cleaned = [char if char.isalnum() else "-" for char in text]
+    slug = "".join(cleaned)
+    while "--" in slug:
+        slug = slug.replace("--", "-")
+    return slug.strip("-")
+
+
+def _money(value: Any) -> str:
+    """1500 → «1 500»; используется для цены из колонки price_from."""
+    try:
+        number = int(float(value))
+    except (TypeError, ValueError):
+        return ""
+    return f"{number:,}".replace(",", " ")
+
+
+def _short_text(text: str, limit: int = 70) -> str:
+    """Первое предложение описания — для краткой подписи в каталоге."""
+    sentence = text.split(".")[0].strip()
+    if len(sentence) > limit:
+        sentence = sentence[: limit - 1].rstrip() + "…"
+    return sentence
+
+
+def _service_payload(row: dict[str, Any], master_slugs: dict[Any, str] | None = None) -> dict[str, Any] | None:
+    """Приводим строку таблицы services к полям фронтенда.
+
+    Поддерживаются обе схемы: «плоская» (slug, short, price, …) и схема из
+    ER-диаграммы проекта (title, description, price_from, category, master_id).
+    """
+    title = str(row.get("title") or "").strip()
+    slug = row.get("slug") or (_slugify(title) if title else "") or (
+        f"service-{row['id']}" if row.get("id") is not None else ""
+    )
     if not slug:
         return None
+
+    description = str(row.get("description") or row.get("about") or "")
+    price = row.get("price") or (f"от {_money(row['price_from'])} ₽" if row.get("price_from") is not None else "")
+    master_id = row.get("master_id")
+    master_slug = row.get("masterSlug") or row.get("master_slug") or ""
+    if not master_slug and master_id is not None and master_slugs:
+        master_slug = master_slugs.get(master_id, "")
+
     return {
         "slug": slug,
-        "title": row.get("title", ""),
-        "short": row.get("short", ""),
+        "title": title,
+        "short": row.get("short") or _short_text(description),
         "category": row.get("category", ""),
-        "format": row.get("format", ""),
-        "term": row.get("term", ""),
-        "price": row.get("price", ""),
-        "about": row.get("about", ""),
-        "needs": row.get("needs", ""),
-        "masterSlug": row.get("masterSlug") or row.get("master_slug") or "",
+        "format": row.get("format") or "Онлайн, в переписке",
+        "term": row.get("term") or "После обсуждения запроса",
+        "price": price,
+        "about": description,
+        "needs": row.get("needs") or "Кратко опишите ситуацию и укажите, как с вами связаться.",
+        "masterSlug": master_slug,
     }
 
 
 def _master_payload(row: dict[str, Any]) -> dict[str, Any] | None:
-    """Приводим строку таблицы masters к полям фронтенда."""
-    slug = row.get("slug")
+    """Приводим строку таблицы masters к полям фронтенда (обе схемы)."""
+    name = str(row.get("name") or row.get("full_name") or "").strip()
+    slug = row.get("slug") or (_slugify(name) if name else "") or (
+        f"master-{row['id']}" if row.get("id") is not None else ""
+    )
     if not slug:
         return None
+
     rating = row.get("rating", 0)
-    experience = row.get("experience", 0)
+    experience = row.get("experience", row.get("experience_years", 0))
     try:
         rating_value = float(rating)
     except (TypeError, ValueError):
@@ -237,12 +287,14 @@ def _master_payload(row: dict[str, Any]) -> dict[str, Any] | None:
         experience_value = int(experience)
     except (TypeError, ValueError):
         experience_value = 0
+
+    description = str(row.get("description") or "")
     return {
         "slug": slug,
-        "name": row.get("name", ""),
+        "name": name or "Мастер",
         "specialization": row.get("specialization", ""),
-        "description": row.get("description", ""),
-        "quote": row.get("quote", ""),
+        "description": description,
+        "quote": row.get("quote") or (f"«{description}»" if description else ""),
         "rating": rating_value,
         "experience": experience_value,
         "price": row.get("price", ""),
@@ -326,7 +378,14 @@ class Store:
         rows = self._select(SERVICES_TABLE)
         if rows is None:
             return [dict(service) for service in MOCK_SERVICES]
-        services = [payload for row in rows if (payload := _service_payload(row))]
+        # Карта «id мастера → slug»: в схеме из ER-диаграммы услуга ссылается на master_id.
+        master_slugs: dict[Any, str] = {}
+        master_rows = self._select(MASTERS_TABLE) or []
+        for master_row in master_rows:
+            payload = _master_payload(master_row)
+            if payload and master_row.get("id") is not None:
+                master_slugs[master_row["id"]] = payload["slug"]
+        services = [payload for row in rows if (payload := _service_payload(row, master_slugs))]
         if not services:
             logger.warning("Таблица services пуста — отдаём встроенные мок-услуги")
             return [dict(service) for service in MOCK_SERVICES]
