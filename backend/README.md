@@ -105,16 +105,3 @@ backend/
   .dockerignore
   README.md
 ```
-
-## Замечания
-
-- SQL-запросов в коде нет: только методы `supabase-py` (`table().select()`,
-  `table().insert()`, `auth.sign_in_with_password`).
-- Мок-хранилище живёт в памяти процесса: заявки видны только до перезапуска,
-  а при `--workers 2` у каждого воркера своя копия. Для Supabase это неактуально.
-- В режиме `supabase` ожидаются таблицы `services` и `masters` с колонками,
-  совпадающими с полями фронтенда (`slug`, `title`, `short`, `category`, `format`,
-  `term`, `price`, `about`, `needs`, `masterSlug`; `master_slug` тоже принимается),
-  и таблица `orders` (`id`, `name`, `email`, `message`, `service`, `consent`).
-- Ответ `422` для удобства фронтенда содержит и `detail` (строка), и `errors`
-  (список полей с сообщениями pydantic).
