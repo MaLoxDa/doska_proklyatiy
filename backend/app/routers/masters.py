@@ -1,5 +1,3 @@
-"""GET /api/masters, GET /api/masters/{slug}."""
-
 from __future__ import annotations
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -9,7 +7,6 @@ from ..store import Store, get_store
 
 router = APIRouter(prefix="/masters", tags=["masters"])
 
-
 @router.get(
     "",
     response_model=list[MasterOut],
@@ -17,7 +14,6 @@ router = APIRouter(prefix="/masters", tags=["masters"])
 )
 def list_masters(store: Store = Depends(get_store)) -> list[dict]:
     return store.list_masters()
-
 
 @router.get(
     "/{slug}",

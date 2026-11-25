@@ -1,7 +1,5 @@
 export const site = {
   name: "Доска проклятий",
-  // Абсолютный адрес нужен для canonical, Open Graph и sitemap.xml.
-  // На репетиции деплоя используется локальный домен (см. deploy/).
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://doska.localhost",
   description:
     "Доска проклятий — площадка, где можно выбрать ритуал, консультацию или амулет и обсудить запрос с мастером в переписке.",
@@ -169,7 +167,6 @@ export function getMaster(slug: string): Master | undefined {
   return masters.find((m) => m.slug === slug);
 }
 
-/** Публичные страницы: только они попадают в sitemap.xml и индексируются. */
 export const publicRoutes: string[] = [
   "/",
   "/uslugi/",

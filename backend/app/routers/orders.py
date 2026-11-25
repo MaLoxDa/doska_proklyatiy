@@ -1,5 +1,3 @@
-"""POST /api/orders — приём заявки на услугу."""
-
 from __future__ import annotations
 
 import logging
@@ -12,7 +10,6 @@ from ..store import Store, get_store
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/orders", tags=["orders"])
-
 
 @router.post(
     "",

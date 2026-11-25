@@ -1,5 +1,3 @@
-"""Pydantic-модели запросов и ответов API."""
-
 from __future__ import annotations
 
 from typing import Literal
@@ -8,16 +6,12 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
 
 from .store import KNOWN_SERVICE_SLUGS
 
-
 class HealthResponse(BaseModel):
-    """Ответ /api/health."""
 
     status: Literal["ok"] = "ok"
     mode: Literal["supabase", "mock"]
 
-
 class ServiceOut(BaseModel):
-    """Услуга (поля совпадают с frontend/lib/data.ts)."""
 
     model_config = ConfigDict(extra="ignore")
 
@@ -32,9 +26,7 @@ class ServiceOut(BaseModel):
     needs: str
     masterSlug: str
 
-
 class MasterOut(BaseModel):
-    """Мастер (поля совпадают с frontend/lib/data.ts)."""
 
     model_config = ConfigDict(extra="ignore")
 
@@ -48,9 +40,7 @@ class MasterOut(BaseModel):
     price: str
     category: str
 
-
 class OrderCreate(BaseModel):
-    """Тело POST /api/orders."""
 
     model_config = ConfigDict(str_strip_whitespace=True, extra="forbid")
 
@@ -77,25 +67,19 @@ class OrderCreate(BaseModel):
             )
         return value
 
-
 class OrderCreated(BaseModel):
-    """Ответ POST /api/orders (201)."""
 
     id: int
     status: Literal["accepted"] = "accepted"
 
-
 class LoginRequest(BaseModel):
-    """Тело POST /api/auth/login."""
 
     model_config = ConfigDict(str_strip_whitespace=True, extra="forbid")
 
     email: EmailStr
     password: str = Field(min_length=1, max_length=256)
 
-
 class LoginResponse(BaseModel):
-    """Ответ POST /api/auth/login (200)."""
 
     status: Literal["ok"] = "ok"
     email: EmailStr
@@ -103,8 +87,6 @@ class LoginResponse(BaseModel):
     refresh_token: str | None = None
     expires_in: int | None = None
 
-
 class ErrorResponse(BaseModel):
-    """Единый формат ошибки (для документации)."""
 
     detail: str

@@ -1,5 +1,3 @@
-"""GET /api/health — проверка доступности сервиса."""
-
 from __future__ import annotations
 
 from fastapi import APIRouter, Depends
@@ -8,7 +6,6 @@ from ..schemas import HealthResponse
 from ..store import Store, get_store
 
 router = APIRouter(tags=["health"])
-
 
 @router.get(
     "/health",

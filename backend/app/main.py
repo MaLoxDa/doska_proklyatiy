@@ -1,10 +1,3 @@
-"""Точка входа FastAPI-приложения «Доска проклятий».
-
-Запуск: ``uvicorn app.main:app --host 0.0.0.0 --port 8000``.
-Все прикладные эндпоинты живут под префиксом ``/api``; стандартная
-документация доступна по ``/docs`` и ``/redoc``.
-"""
-
 from __future__ import annotations
 
 import logging
@@ -27,9 +20,7 @@ ROBOTS_VALUE = "noindex, nofollow"
 
 logger = logging.getLogger("app")
 
-
 def configure_logging(level: str = "INFO") -> None:
-    """Логирование в stdout с уровнем INFO и форматом со временем."""
     handler = logging.StreamHandler(stream=sys.stdout)
     handler.setFormatter(
         logging.Formatter(
@@ -43,10 +34,8 @@ def configure_logging(level: str = "INFO") -> None:
     root.addHandler(handler)
     root.setLevel(level.upper())
 
-    # Клиент Supabase (httpx) на INFO пишет каждый запрос — оставляем только предупреждения.
     logging.getLogger("httpx").setLevel(logging.WARNING)
     logging.getLogger("httpcore").setLevel(logging.WARNING)
-
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
@@ -66,9 +55,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     yield
     logger.info("Остановка API")
 
-
 def _validation_detail(exc: RequestValidationError) -> tuple[str, list[dict]]:
-    """Человекочитаемое сообщение и машинные детали для 422."""
     errors: list[dict] = []
     for error in exc.errors():
         location = [str(part) for part in error.get("loc", ()) if part not in ("body", "query")]
@@ -81,7 +68,6 @@ def _validation_detail(exc: RequestValidationError) -> tuple[str, list[dict]]:
         )
     detail = "; ".join(f"{item['field']}: {item['message']}" for item in errors)
     return detail or "Некорректные данные запроса", errors
-
 
 def create_app() -> FastAPI:
     settings = get_settings()
@@ -99,7 +85,6 @@ def create_app() -> FastAPI:
         docs_url="/docs",
         redoc_url="/redoc",
         openapi_url="/openapi.json",
-        # .localhost — служебный домен, поэтому EmailStr в contact.email его не примет.
         contact={"name": "Доска проклятий", "url": "https://doska.localhost"},
         license_info={"name": "Учебный проект"},
         openapi_tags=[
@@ -111,7 +96,6 @@ def create_app() -> FastAPI:
         ],
     )
 
-    # CORS: только origin'ы фронтенда, только нужные методы.
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.cors_origin_list,
@@ -124,7 +108,6 @@ def create_app() -> FastAPI:
 
     @app.middleware("http")
     async def add_robots_header(request: Request, call_next):
-        """SEO-требование методички: API не индексируется поисковиками."""
         response = await call_next(request)
         if request.url.path.startswith(API_PREFIX):
             response.headers[ROBOTS_HEADER] = ROBOTS_VALUE
@@ -148,6 +131,5 @@ def create_app() -> FastAPI:
     app.include_router(auth.router, prefix=API_PREFIX)
 
     return app
-
 
 app = create_app()

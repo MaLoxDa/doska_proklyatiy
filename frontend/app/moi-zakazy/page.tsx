@@ -6,7 +6,6 @@ import { demoOrders } from "@/lib/data";
 export const metadata: Metadata = {
   title: "Мои заказы",
   description: "Личный кабинет: заявки, переписка с мастером и готовые отчёты.",
-  // Личный кабинет закрыт от индексации: страница в robots.txt и вход только после авторизации.
   robots: { index: false, follow: false },
   alternates: { canonical: "/moi-zakazy" },
 };

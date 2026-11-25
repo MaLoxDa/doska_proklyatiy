@@ -53,10 +53,6 @@ services:
     ports:
       - "127.0.0.1:80:80"
       - "127.0.0.1:443:443"
-    # В настоящем деплое конфиг и сертификаты монтируются томами:
-    # volumes:
-    #   - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-    #   - ./certs:/etc/nginx/certs:ro
     depends_on:
       - frontend
       - backend
@@ -66,4 +62,3 @@ services:
 networks:
   doska-net:
     driver: bridge
-

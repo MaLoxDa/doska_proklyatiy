@@ -9,8 +9,6 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        // Личный кабинет закрыт от сканирования, вход — только после авторизации.
-        // Ответы API тоже не индексируются (дополнительно заголовок X-Robots-Tag в nginx и FastAPI).
         disallow: ["/moi-zakazy", "/api/"],
       },
     ],

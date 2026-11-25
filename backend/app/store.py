@@ -1,12 +1,3 @@
-"""Слой доступа к данным.
-
-Данные берутся либо из Supabase (через официальный клиент supabase-py,
-только методы клиента — никакого SQL), либо из встроенного мок-хранилища
-в памяти. Мок используется, когда Supabase не настроен, а также как
-graceful fallback, если таблица или сеть недоступны: ошибка логируется,
-запрос не падает.
-"""
-
 from __future__ import annotations
 
 import logging
@@ -17,8 +8,6 @@ from .config import Settings, get_settings
 
 logger = logging.getLogger(__name__)
 
-# Мок-данные повторяют frontend/lib/data.ts один в один, чтобы API и статический
-# экспорт фронтенда отдавали одинаковый контент.
 MOCK_SERVICES: list[dict[str, Any]] = [
     {
         "slug": "lyubovnaya-magiya",
@@ -181,7 +170,6 @@ MOCK_MASTERS: list[dict[str, Any]] = [
     },
 ]
 
-# Slug'и, которые принимает POST /api/orders (совпадают с фронтендом).
 KNOWN_SERVICE_SLUGS: frozenset[str] = frozenset(service["slug"] for service in MOCK_SERVICES)
 
 SERVICES_TABLE = "services"
@@ -190,21 +178,16 @@ ORDERS_TABLE = "orders"
 
 _FIRST_MOCK_ORDER_ID = 101
 
-
 class DemoModeError(RuntimeError):
-    """Supabase не настроен — операция доступна только в облачном режиме."""
-
+    pass
 
 class AuthUnavailableError(RuntimeError):
-    """Supabase настроен, но клиент недоступен (ошибка конфигурации/сети)."""
-
+    pass
 
 class InvalidCredentialsError(RuntimeError):
-    """Supabase отклонил логин или пароль."""
-
+    pass
 
 def _slugify(value: str) -> str:
-    """Простой транслит в slug: «Защитные обряды» → «zashchitnye-obryady»."""
     table = str.maketrans(
         "абвгдеёжзийклмнопрстуфхцчшщъыьэюя",
         "abvgdeejziyklmnoprstufhccss_y_eua",
@@ -216,30 +199,20 @@ def _slugify(value: str) -> str:
         slug = slug.replace("--", "-")
     return slug.strip("-")
 
-
 def _money(value: Any) -> str:
-    """1500 → «1 500»; используется для цены из колонки price_from."""
     try:
         number = int(float(value))
     except (TypeError, ValueError):
         return ""
     return f"{number:,}".replace(",", " ")
 
-
 def _short_text(text: str, limit: int = 70) -> str:
-    """Первое предложение описания — для краткой подписи в каталоге."""
     sentence = text.split(".")[0].strip()
     if len(sentence) > limit:
         sentence = sentence[: limit - 1].rstrip() + "…"
     return sentence
 
-
 def _service_payload(row: dict[str, Any], master_slugs: dict[Any, str] | None = None) -> dict[str, Any] | None:
-    """Приводим строку таблицы services к полям фронтенда.
-
-    Поддерживаются обе схемы: «плоская» (slug, short, price, …) и схема из
-    ER-диаграммы проекта (title, description, price_from, category, master_id).
-    """
     title = str(row.get("title") or "").strip()
     slug = row.get("slug") or (_slugify(title) if title else "") or (
         f"service-{row['id']}" if row.get("id") is not None else ""
@@ -267,9 +240,7 @@ def _service_payload(row: dict[str, Any], master_slugs: dict[Any, str] | None = 
         "masterSlug": master_slug,
     }
 
-
 def _master_payload(row: dict[str, Any]) -> dict[str, Any] | None:
-    """Приводим строку таблицы masters к полям фронтенда (обе схемы)."""
     name = str(row.get("name") or row.get("full_name") or "").strip()
     slug = row.get("slug") or (_slugify(name) if name else "") or (
         f"master-{row['id']}" if row.get("id") is not None else ""
@@ -301,9 +272,7 @@ def _master_payload(row: dict[str, Any]) -> dict[str, Any] | None:
         "category": row.get("category", ""),
     }
 
-
 class Store:
-    """Единая точка доступа к данным: Supabase с откатом на мок."""
 
     def __init__(self, settings: Settings | None = None) -> None:
         self._settings = settings or get_settings()
@@ -314,8 +283,6 @@ class Store:
         self._next_order_id = _FIRST_MOCK_ORDER_ID
         self._orders_lock = threading.Lock()
 
-    # ------------------------------------------------------------------ режим
-
     @property
     def mode(self) -> str:
         return self._settings.mode
@@ -324,11 +291,8 @@ class Store:
     def supabase_configured(self) -> bool:
         return self._settings.supabase_configured
 
-    # --------------------------------------------------------------- Supabase
-
     @property
     def client(self) -> Any | None:
-        """Лениво созданный клиент Supabase. ``None`` — работаем на мок-данных."""
         if not self._settings.supabase_configured:
             return None
         with self._client_lock:
@@ -357,7 +321,6 @@ class Store:
             return self._client
 
     def _select(self, table: str) -> list[dict[str, Any]] | None:
-        """SELECT через клиент Supabase. ``None`` означает «данных нет, нужен мок»."""
         client = self.client
         if client is None:
             return None
@@ -372,13 +335,10 @@ class Store:
             )
             return None
 
-    # ------------------------------------------------------------------ услуги
-
     def list_services(self) -> list[dict[str, Any]]:
         rows = self._select(SERVICES_TABLE)
         if rows is None:
             return [dict(service) for service in MOCK_SERVICES]
-        # Карта «id мастера → slug»: в схеме из ER-диаграммы услуга ссылается на master_id.
         master_slugs: dict[Any, str] = {}
         master_rows = self._select(MASTERS_TABLE) or []
         for master_row in master_rows:
@@ -394,8 +354,6 @@ class Store:
     def get_service(self, slug: str) -> dict[str, Any] | None:
         return next((service for service in self.list_services() if service["slug"] == slug), None)
 
-    # ----------------------------------------------------------------- мастера
-
     def list_masters(self) -> list[dict[str, Any]]:
         rows = self._select(MASTERS_TABLE)
         if rows is None:
@@ -409,10 +367,7 @@ class Store:
     def get_master(self, slug: str) -> dict[str, Any] | None:
         return next((master for master in self.list_masters() if master["slug"] == slug), None)
 
-    # ---------------------------------------------------------------- заявки
-
     def create_order(self, payload: dict[str, Any]) -> int:
-        """Сохранить заявку и вернуть её идентификатор (int)."""
         row = {
             "name": payload["name"],
             "email": str(payload["email"]),
@@ -449,19 +404,10 @@ class Store:
 
     @property
     def mock_orders(self) -> list[dict[str, Any]]:
-        """Заявки, накопленные в мок-хранилище (для отладки/тестов)."""
         with self._orders_lock:
             return [dict(order) for order in self._mock_orders]
 
-    # ---------------------------------------------------------- аутентификация
-
     def login(self, email: str, password: str) -> dict[str, Any]:
-        """Вход через supabase.auth.sign_in_with_password.
-
-        :raises DemoModeError: если Supabase не настроен.
-        :raises AuthUnavailableError: если клиент Supabase недоступен.
-        :raises InvalidCredentialsError: если Supabase отклонил пару логин/пароль.
-        """
         if not self._settings.supabase_configured:
             raise DemoModeError("Supabase не настроен")
 
@@ -472,7 +418,6 @@ class Store:
         try:
             response = client.auth.sign_in_with_password({"email": email, "password": password})
         except Exception:
-            # Детали ошибки Supabase наружу не отдаём, пароль в лог не пишем.
             logger.warning("Supabase отклонил вход для %s", email)
             raise InvalidCredentialsError("Неверная пара логин/пароль") from None
 
@@ -486,10 +431,7 @@ class Store:
             "expires_in": getattr(session, "expires_in", None),
         }
 
-
 def get_store() -> Store:
-    """FastAPI-зависимость: один Store на процесс."""
     return _store
-
 
 _store = Store()

@@ -1,9 +1,3 @@
-"""POST /api/auth/login — вход через Supabase Auth.
-
-Если Supabase не настроен, вход недоступен: фронтенд получает 503 и показывает
-сообщение о демо-режиме.
-"""
-
 from __future__ import annotations
 
 import logging
@@ -24,7 +18,6 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 DEMO_MODE_DETAIL = "Демо-режим: подключение Supabase не настроено"
-
 
 @router.post(
     "/login",

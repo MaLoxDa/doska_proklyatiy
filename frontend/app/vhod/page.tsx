@@ -5,7 +5,6 @@ import { LoginForm } from "@/components/LoginForm";
 export const metadata: Metadata = {
   title: "Вход в личный кабинет",
   description: "Войдите, чтобы отслеживать статус заказов и общаться с мастерами.",
-  // Страница входа закрыта от индексации метатегом robots — см. методичку 70–71.
   robots: { index: false, follow: false },
   alternates: { canonical: "/vhod" },
 };

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Container, Rule, SectionTitle, Tabs } from "@/components/ui";
-import { services, site } from "@/lib/data";
+import { services } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Доска проклятий — ритуалы и консультации",
@@ -11,11 +11,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-const steps = [
-  { title: "Выберите услугу", note: "Изучите каталог и найдите подходящий ритуал" },
-  { title: "Заполните анкету", note: "Опишите ситуацию и укажите контакты" },
-  { title: "Получите отчёт", note: "Мастер свяжется с вами и обсудит детали" },
-];
+const steps = ["Выберите услугу", "Заполните анкету", "Получите отчёт"];
 
 export default function HomePage() {
   return (
@@ -91,12 +87,12 @@ export default function HomePage() {
             </div>
             <ol className="grid gap-4 sm:grid-cols-[1fr_auto_1fr_auto_1fr] sm:items-center">
               {steps.map((step, i) => (
-                <li key={step.title} className="contents">
+                <li key={step} className="contents">
                   {i > 0 ? (
                     <span aria-hidden="true" className="hidden h-px w-full max-w-[124px] justify-self-center bg-line sm:block" />
                   ) : null}
                   <div className="flex h-[46px] items-center justify-center rounded bg-accent px-4 text-center text-ui text-white">
-                    {step.title}
+                    {step}
                   </div>
                 </li>
               ))}

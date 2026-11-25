@@ -1,4 +1,3 @@
-# Локальное окружение и артефакты Python
 .venv/
 venv/
 env/
@@ -13,20 +12,16 @@ __pycache__/
 .pip-cache/
 .pip-tmp/
 
-# Секреты: в образ не должен попадать ни один .env
 .env
 .env.*
 *.env
 !.env.example
 
-# Git и служебные файлы
 .git/
 .gitignore
 
-# Docker-описания и документация не нужны внутри образа
 Dockerfile
 .dockerignore
 README.md
 
-# Тесты
 tests/
