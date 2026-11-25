@@ -53,8 +53,8 @@ docker run --rm -p 8000:8000 \
 
 | Переменная | По умолчанию | Назначение |
 | --- | --- | --- |
-| `SUPABASE_URL` | — | URL проекта Supabase. Вместе с ключом включает режим `supabase` |
-| `SUPABASE_KEY` | — | Публичный ключ (`sb_publishable_...`) |
+| `SUPABASE_URL` | - | URL проекта Supabase. Вместе с ключом включает режим `supabase` |
+| `SUPABASE_KEY` | - | Публичный ключ (`sb_publishable_...`) |
 | `SUPABASE_TIMEOUT` | `5.0` | Таймаут запросов к Supabase, секунды |
 | `CORS_ORIGINS` | `http://localhost:3000,http://127.0.0.1:3000,https://doska.localhost,http://doska.localhost` | Разрешённые origin'ы через запятую |
 | `LOG_LEVEL` | `INFO` | Уровень логирования |
@@ -63,22 +63,22 @@ docker run --rm -p 8000:8000 \
 
 ## Эндпоинты
 
-Все прикладные маршруты — под префиксом `/api`; на каждый ответ `/api/*`
+Все прикладные маршруты - под префиксом `/api`; на каждый ответ `/api/*`
 добавляется заголовок `X-Robots-Tag: noindex, nofollow` (требование по SEO).
 
 | Метод | Путь | Ответ |
 | --- | --- | --- |
 | GET | `/api/health` | `200 {"status":"ok","mode":"supabase"\|"mock"}` |
-| GET | `/api/services` | `200` — список услуг |
+| GET | `/api/services` | `200` - список услуг |
 | GET | `/api/services/{slug}` | `200` или `404 {"detail": "..."}` |
-| GET | `/api/masters` | `200` — список мастеров |
+| GET | `/api/masters` | `200` - список мастеров |
 | GET | `/api/masters/{slug}` | `200` или `404 {"detail": "..."}` |
 | POST | `/api/orders` | `201 {"id": <int>, "status": "accepted"}`, `422` при ошибке валидации |
 | POST | `/api/auth/login` | `200` с токенами, `401` при неверной паре, `503` в демо-режиме |
 
 `POST /api/orders` принимает `{name, email, message, service, consent}`:
-`name` 2–80 символов, `email` — валидный адрес, `message` 10–2000 символов,
-`service` — существующий slug, `consent` обязательно `true`.
+`name` 2–80 символов, `email` - валидный адрес, `message` 10–2000 символов,
+`service` - существующий slug, `consent` обязательно `true`.
 
 Стандартная документация: `/docs` (Swagger UI), `/redoc`, схема — `/openapi.json`.
 Собственного `/api/docs` нет.
