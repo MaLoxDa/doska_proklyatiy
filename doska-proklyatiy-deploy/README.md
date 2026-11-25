@@ -114,6 +114,11 @@ mkcert -cert-file doska.localhost.pem -key-file doska.localhost-key.pem \
 артефакт, но выкладка подтверждается вручную; Continuous Deployment — выкладка автоматически после каждого
 успешного прохождения конвейера.
 
+Результат последнего запуска на коммите `b9809fd`: оба задания — «Собрать образ backend» и
+«Собрать образ frontend» — завершились успешно, образы доступны в GHCR
+(`docker pull ghcr.io/maloxda/doska-proklyatiy-frontend:latest` и `...-backend:latest`
+загружаются без авторизации, значит пакеты публичные).
+
 ## 7. Скриншоты
 
 Папка `doska-proklyatiy-deploy-screenshots/` (в корне репозитория, рядом с этой папкой):
